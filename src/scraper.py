@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import sqlite3
 import argparse
+from datetime import datetime
 
 # Function to scrape and load data
 def scrape_news():
@@ -69,6 +70,10 @@ def filter_entries_by_words_and_comments():
     ''')
     results = c.fetchall()
     conn.close()
+
+    # Log the filter usage
+    save_filter_usage('comments')
+
     return results
 
 # Filter comments ordered by points
@@ -83,7 +88,32 @@ def filter_entries_by_words_and_points():
     ''')
     results = c.fetchall()
     conn.close()
+
+    # Log the filter usage
+    save_filter_usage('points')
+
     return results
+
+# Function to save filter usage
+def save_filter_usage(filter_type):
+    conn = sqlite3.connect('y_news.db')
+    c = conn.cursor()
+
+    timestamp = datetime.now()
+    c.execute('''
+    CREATE TABLE IF NOT EXISTS filter_usage (
+        filter_type TEXT,
+        timestamp DATETIME
+    )
+    ''')
+
+    c.execute('''
+    INSERT INTO filter_usage (filter_type, timestamp)
+    VALUES (?, ?)
+    ''', (filter_type, timestamp))
+
+    conn.commit()
+    conn.close()
 
 # Main CLI function
 def main():
