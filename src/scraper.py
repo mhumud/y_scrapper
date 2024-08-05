@@ -2,8 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import sqlite3
 import argparse
-from constants import URL, DATABASE_FILE
-from filters import filter_entries_by_words_and_comments, filter_entries_by_words_and_points
+from .constants import URL, DATABASE_FILE
+from .filters import filter_entries_by_words_and_comments, filter_entries_by_words_and_points
 
 # Function to scrape and load data
 def scrape_news():

@@ -1,6 +1,6 @@
 import sqlite3
-from constants import DATABASE_FILE
 from datetime import datetime
+from .constants import DATABASE_FILE
 
 # Filter comments ordered by comments
 def filter_entries_by_words_and_comments():
