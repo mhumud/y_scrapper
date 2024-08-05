@@ -2,8 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import sqlite3
 import argparse
-from .constants import URL, DATABASE_FILE
-from .filters import filter_entries_by_words_and_comments, filter_entries_by_words_and_points
+from src.constants import URL, DATABASE_FILE
+from src.filters import filter_entries_by_words_and_comments, filter_entries_by_words_and_points
 
 # Function to scrape and load data
 def scrape_news():
@@ -18,17 +18,18 @@ def scrape_news():
         item = items[i]
         subtext = subtexts[i]
 
-        number = item.select_one('.rank').text.strip('.')
+        number = int(item.select_one('.rank').text.strip('.'))
         title = item.select_one('.titleline').find('a').text
         score_element = subtext.select_one('.score')
-        points = score_element.text.split()[0] if score_element else '0'
-        comments = subtext.select('a')[-1].text.split()[0]
+        points = int(score_element.text.split()[0]) if score_element else 0
+        subtext_element = subtext.select('a')[-1].text.split()[0]
+        comments = int(subtext_element) if subtext_element.isnumeric() else 0
 
         entries.append({
-            'number': int(number),
+            'number': number,
             'title': title,
-            'points': int(points),
-            'comments': int(comments) if comments.isnumeric() else 0
+            'points': points,
+            'comments': comments
         })
 
     return entries
