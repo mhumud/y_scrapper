@@ -7,7 +7,7 @@ This project scrapes the first 30 entries from Hacker News and stores the data i
 1. Clone this repository:
    ```git clone https://github.com/mhumud/y_scrapper.git```
 2. Create a virtual environment and activate it:
-   ```python3 -m venv .venv```
+   ```python -m venv .venv```
 3. Install the dependencies:
    ```pip install -r requirements.txt```
 
@@ -15,19 +15,19 @@ This project scrapes the first 30 entries from Hacker News and stores the data i
 
 1. Run the scraper:
    ```
-   python3 -m src.scraper --scrape
+   python -m src.scraper --scrape
    ```
-Be sure to first scrape the website, otherwise the filtering will fail.
+Be sure to first scrape the website (by using this command), otherwise the filtering will fail.
 
 2. Filter entries:
    - More than 5 words in title, ordered by comments:
      ```
-     python3 -m src.scraper --filter comments
+     python -m src.scraper --filter comments
      ```
 
    - 5 or fewer words in title, ordered by points:
      ```
-     python3 -m src.scraper --filter points
+     python -m src.scraper --filter points
      ```
 
 ## Testing
