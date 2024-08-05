@@ -1,11 +1,14 @@
+"""Module with tests for the scraper module."""
+from pytest import MonkeyPatch
 import requests
 from src.scraper import scrape_news
-from .mock_html import mock_html
+from .mock_html import MOCK_HTML
 
-def test_scrape_news(monkeypatch):
-    mock_response = type('mock', (object,), {'text': mock_html})
+def test_scrape_news(monkeypatch: MonkeyPatch):
+    """Test that mock the request and check the correct behaviour for the scraping function."""
+    mock_response = type('mock', (object,), {'text': MOCK_HTML})
 
-    def mock_get(*args, **kwargs):
+    def mock_get(*_, **__):
         return mock_response
 
     monkeypatch.setattr(requests, 'get', mock_get)

@@ -1,4 +1,5 @@
-mock_html = """
+"""Module with constants for the different mock tests."""
+MOCK_HTML = """
   <tr class="athing" id="41156872">
     <td align="right" valign="top" class="title">
       <span class="rank">1.</span>

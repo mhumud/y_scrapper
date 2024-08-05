@@ -1,3 +1,4 @@
+"""Module with the constants for the project."""
 import os
 
 URL = "https://news.ycombinator.com/"

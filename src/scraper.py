@@ -1,13 +1,14 @@
+"""Module with the scraping functions and its interactions with the database."""
+import argparse
+import sqlite3
 import requests
 from bs4 import BeautifulSoup
-import sqlite3
-import argparse
 from src.constants import URL, DATABASE_FILE
 from src.filters import filter_entries_by_words_and_comments, filter_entries_by_words_and_points
 
-# Function to scrape and load data
 def scrape_news():
-    response = requests.get(URL)
+    """Function to scrape and load data"""
+    response = requests.get(URL, timeout=60)
     soup = BeautifulSoup(response.text, 'html.parser')
 
     # Filter the elements of the html that are being looked for
@@ -37,8 +38,8 @@ def scrape_news():
 
     return entries
 
-# Function to save data to SQLite
 def save_to_db(entries):
+    """Function to save data to SQLite"""
     conn = sqlite3.connect(DATABASE_FILE)
     c = conn.cursor()
 
@@ -65,8 +66,8 @@ def save_to_db(entries):
     conn.commit()
     conn.close()
 
-# Main CLI function
 def main():
+    """Main CLI function"""
     # Parser for easier CLI usage
     parser = argparse.ArgumentParser(description='Y Combinator News Scraper and Filter')
     parser.add_argument('--scrape', action='store_true', help='Scrape News')

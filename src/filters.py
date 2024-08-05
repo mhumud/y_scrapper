@@ -1,9 +1,10 @@
+"""Module with the filtering options and its interactions with the database."""
 import sqlite3
 from datetime import datetime
 from .constants import DATABASE_FILE
 
-# Filter comments ordered by comments
 def filter_entries_by_words_and_comments():
+    """Filter comments ordered by comments"""
     conn = sqlite3.connect(DATABASE_FILE)
     c = conn.cursor()
 
@@ -20,8 +21,8 @@ def filter_entries_by_words_and_comments():
 
     return results
 
-# Filter comments ordered by points
 def filter_entries_by_words_and_points():
+    """Filter comments ordered by points"""
     conn = sqlite3.connect(DATABASE_FILE)
     c = conn.cursor()
 
@@ -38,8 +39,8 @@ def filter_entries_by_words_and_points():
 
     return results
 
-# Function to save filter usage
 def save_filter_usage(filter_type):
+    """Function to save filter usage"""
     conn = sqlite3.connect(DATABASE_FILE)
     c = conn.cursor()
 
