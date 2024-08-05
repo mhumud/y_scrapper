@@ -17,6 +17,7 @@ This project scrapes the first 30 entries from Hacker News and stores the data i
    ```
    python3 -m src.scraper --scrape
    ```
+Be sure to first scrape the website, otherwise the filtering will fail.
 
 2. Filter entries:
    - More than 5 words in title, ordered by comments:

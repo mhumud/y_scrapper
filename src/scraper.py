@@ -10,6 +10,7 @@ def scrape_news():
     response = requests.get(URL)
     soup = BeautifulSoup(response.text, 'html.parser')
 
+    # Filter the elements of the html that are being looked for
     entries = []
     items = soup.select('.athing')
     subtexts = soup.select('.subtext')
@@ -18,6 +19,7 @@ def scrape_news():
         item = items[i]
         subtext = subtexts[i]
 
+        # Extract the desired elemnts
         number = int(item.select_one('.rank').text.strip('.'))
         title = item.select_one('.titleline').find('a').text
         score_element = subtext.select_one('.score')
@@ -25,6 +27,7 @@ def scrape_news():
         subtext_element = subtext.select('a')[-1].text.split()[0]
         comments = int(subtext_element) if subtext_element.isnumeric() else 0
 
+        # Append entries to list
         entries.append({
             'number': number,
             'title': title,
@@ -39,8 +42,10 @@ def save_to_db(entries):
     conn = sqlite3.connect(DATABASE_FILE)
     c = conn.cursor()
 
+    # Remove elements if table is already populated
     c.execute("DROP TABLE IF EXISTS entries")
 
+    # Create table
     c.execute('''
     CREATE TABLE entries (
         number INTEGER,
@@ -50,6 +55,7 @@ def save_to_db(entries):
     )
     ''')
 
+    # Insert elements into table
     for entry in entries:
         c.execute('''
         INSERT INTO entries (number, title, points, comments)
@@ -61,16 +67,19 @@ def save_to_db(entries):
 
 # Main CLI function
 def main():
+    # Parser for easier CLI usage
     parser = argparse.ArgumentParser(description='Y Combinator News Scraper and Filter')
     parser.add_argument('--scrape', action='store_true', help='Scrape News')
     parser.add_argument('--filter', choices=['comments', 'points'], help='Filter entries')
     args = parser.parse_args()
 
+    # Scrape the webpage
     if args.scrape:
         entries = scrape_news()
         save_to_db(entries)
         print("Scraping completed and data saved to database.")
 
+    # Filter the database
     elif args.filter:
         if args.filter == 'comments':
             results = filter_entries_by_words_and_comments()
@@ -81,9 +90,9 @@ def main():
         for result in results:
             print(result)
 
+    # Print the help menu
     else:
         parser.print_help()
-
 
 if __name__ == '__main__':
     main()
