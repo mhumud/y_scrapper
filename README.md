@@ -7,7 +7,10 @@ This project scrapes the first 30 entries from Hacker News and stores the data i
 1. Clone this repository:
    ```git clone https://github.com/mhumud/y_scrapper.git```
 2. Create a virtual environment and activate it:
-   ```python -m venv .venv```
+   ```
+   python -m venv venv
+   source venv/bin/activate
+   ```
 3. Install the dependencies:
    ```pip install -r requirements.txt```
 
