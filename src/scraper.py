@@ -1,8 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import sqlite3
+import argparse
 
-# Function to scrape data
+# Function to scrape and load data
 def scrape_news():
     url = 'https://news.ycombinator.com/'
     response = requests.get(url)
@@ -29,7 +30,7 @@ def scrape_news():
             'comments': int(comments) if comments.isnumeric() else 0
         })
 
-    save_to_db(entries)
+    return entries
 
 # Function to save data to SQLite
 def save_to_db(entries):
@@ -83,3 +84,30 @@ def filter_entries_by_words_and_points():
     results = c.fetchall()
     conn.close()
     return results
+
+# Main CLI function
+def main():
+    parser = argparse.ArgumentParser(description='Y Combinator News Scraper and Filter')
+    parser.add_argument('--scrape', action='store_true', help='Scrape News')
+    parser.add_argument('--filter', choices=['comments', 'points'], help='Filter entries')
+    args = parser.parse_args()
+
+    if args.scrape:
+        entries = scrape_news()
+        save_to_db(entries)
+        print("Scraping completed and data saved to database.")
+
+    elif args.filter:
+        if args.filter == 'comments':
+            results = filter_entries_by_words_and_comments()
+        elif args.filter == 'points':
+            results = filter_entries_by_words_and_points()
+
+        for result in results:
+            print(result)
+    
+    else:
+        parser.print_help()
+
+if __name__ == '__main__':
+    main()
